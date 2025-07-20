@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css/effect-coverflow";
+import { Link, useNavigate } from "react-router-dom";
 
 const pastDeals = [
   {
@@ -31,6 +33,15 @@ const pastDeals = [
     score: 87,
     costPerMile: "$3.90/mile",
     note: "SOLD"
+  },
+  {
+    image: "/cars/Porsche-Cayenne.jpg",
+    title: "Porsche Cayenne",
+    price: "$99,000",
+    miles: "9,000 miles",
+    score: 90,
+    costPerMile: "$3.70/mile",
+    note: "Sold quickly"
   }
 ];
 
@@ -41,17 +52,42 @@ export default function HomePage() {
 
   return (
     <div className="bg-white text-gray-900 font-sans font-[Inter]">
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 bg-gradient-to-br from-black to-gray-900 text-white">
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">Find the Best Deals on Dream Cars</h1>
-        <p className="text-xl md:text-2xl mb-6 max-w-2xl">
-          Discover exotic and luxury cars priced below market—with the data to prove it.
-        </p>
+      {/* Header Navigation */}
+      <nav className="bg-white shadow sticky top-0 z-50">
+        <div className="max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link to="/" className="text-xl font-bold text-red-600">Dream Ride Deals</Link>
+          <div className="space-x-6 text-sm md:text-base font-medium">
+            <Link to="/plans" className="hover:text-red-600">Plans</Link>
+            <Link to="/how-it-works" className="hover:text-red-600">How It Works</Link>
+            <Link to="/faqs" className="hover:text-red-600">FAQs</Link>
+            <Link to="/contact" className="hover:text-red-600">Contact</Link>
+            <Link to="/affiliate" className="hover:text-red-600">Affiliate</Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section with Background Image */}
+      <section
+        className="h-[60vh] flex flex-col items-center justify-center text-center px-6 text-white bg-cover bg-center relative"
+        style={{ backgroundImage: "url('/images/home-hero.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div className="relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
+            Find the Best Deals on Dream Cars
+          </h1>
+          <p className="text-lg md:text-xl mb-6 max-w-2xl drop-shadow-md">
+            Find the best deals on exotic, luxury and sports cars in the nation - with the data to prove it.
+          </p>
+          <Link to="/plans" className="inline-block bg-red-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-red-700 transition">
+            View Our Plans
+          </Link>
+        </div>
       </section>
 
       {/* About Section */}
       <section className="py-24 px-6 bg-gray-100 text-center max-w-screen-lg mx-auto">
-        <h2 className="text-4xl font-bold mb-10 inline-block border-b-4 border-red-600">How It Works</h2>
+        <h2 className="text-4xl font-bold mb-10 inline-block border-b-4 border-red-600">Our Data-Driven Advantage</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-xl font-semibold mb-2">Market-Wide Deal Analysis 🔍</h3>
@@ -72,20 +108,20 @@ export default function HomePage() {
       <section id="carousel" className="py-24 px-6 bg-white text-center max-w-screen-lg mx-auto">
         <h2 className="text-4xl font-bold mb-10 inline-block border-b-4 border-red-600">Past Dream Ride Deals</h2>
         <Swiper
-          modules={[Navigation, Autoplay]}
+          modules={[Navigation, Autoplay, EffectCoverflow]}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          slidesPerView="auto"
+          coverflowEffect={{ rotate: 0, stretch: 0, depth: 100, modifier: 2.5, slideShadows: false }}
           navigation
-          autoplay={{ delay: 4000 }}
-          loop
-          spaceBetween={30}
-          slidesPerView={1}
-          breakpoints={{
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 }
-          }}
+          className="mySwiper"
         >
           {pastDeals.map((deal, index) => (
-            <SwiperSlide key={index}>
-              <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-md max-w-sm mx-auto">
+            <SwiperSlide key={index} className="w-72">
+              <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-md">
                 <img src={deal.image} alt={deal.title} className="w-full h-56 object-cover" />
                 <div className="p-4 text-left">
                   <h3 className="text-xl font-semibold">{deal.title}</h3>
@@ -127,7 +163,7 @@ export default function HomePage() {
           <textarea rows="4" placeholder="Anything else you'd like to share?" className="px-4 py-3 rounded-xl border border-gray-300 text-black" />
           <p className="text-sm text-gray-600">✅ No spam, ever. Just car insights that matter.</p>
           <button className="bg-red-600 text-white font-semibold rounded-xl px-6 py-3 hover:bg-red-700 transition mt-2 w-full sm:w-auto">
-            Submit
+            Send Me the Best Car Deals Weekly
           </button>
         </form>
       </section>
